@@ -1,5 +1,5 @@
 {
-  "name": "cdn-upyun2",
+  "name": "cdn-up",
   "version": "0.0.1",
   "description": "upyun cdn upload",
   "main": "index.js",
