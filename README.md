@@ -26,7 +26,8 @@ upyun_cdn({
 }, {
     bucket: 'upyun-text',
     operator: 'test',
-    password: 'test'
+    password: 'test',
+    domain: ''  // 该 bucket 对应的域名，可不填
 }, function(err, result) {
     if (err) {
         console.error(err);
