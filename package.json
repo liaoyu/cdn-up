@@ -1,6 +1,6 @@
 {
-  "name": "upyun_cdn",
-  "version": "0.1.5",
+  "name": "cdn-up",
+  "version": "0.0.2",
   "description": "upyun cdn upload",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jinphen/upyun_cdn.git"
+    "url": "git+https://github.com/liaoyu/cdn-up.git"
   },
   "keywords": [
     "upyun",
@@ -18,9 +18,9 @@
   "author": "gxuezhao@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jinphen/upyun_cdn/issues"
+    "url": "https://github.com/liaoyu/cdn-up/issues"
   },
-  "homepage": "https://github.com/jinphen/upyun_cdn#readme",
+  "homepage": "https://github.com/liaoyu/cdn-up#readme",
   "dependencies": {
     "gulp-util": "^3.0.7",
     "mime": "^1.3.4",
