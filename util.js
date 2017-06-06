@@ -38,6 +38,6 @@ module.exports = {
     },
 
     logAlreadyUpload: function(file) {
-        gutil.log(colors.green('又拍服务器已存在'), colors.green(file.sourcePath), '→', colors.green(file.cdnFullPath));
+        gutil.log('又拍服务器已存在', colors.green(file.sourcePath), '→', colors.green(file.cdnFullPath));
     }
 };
