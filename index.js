@@ -11,7 +11,7 @@ var upyunErrorMsgMap = {
     '40100006': '用户不存在！'
 };
 
-module.exports = function(upload, auth, callback) {
+module.exports = function(options, callback) {
     var  context = {
         needUploadNum: 0, // 需要上传数量
         alreadyUploadNum: 0, // 已上传，文件大小相同的数量
@@ -22,14 +22,15 @@ module.exports = function(upload, auth, callback) {
         logAlreadyUploadDefer: Q.defer(),
         uploadDefer: Q.defer(),
         logUploadFailDefer: Q.defer(),
+        options: options,
 
-        upyun: new Upyun(auth.bucket, auth.operator, auth.password, 'v1'),
+        upyun: new Upyun(options.bucket, options.operator, options.password, 'v1'),
 
         errors: []
     };
 
-    return fs.src(upload.src, {read: false})
-        .pipe(init(upload, auth)) // 初始化属性值
+    return fs.src(options.src, {read: false})
+        .pipe(init(options)) // 初始化属性值
 
         .pipe(checkRemoteFile(context)) // 是否存在文件
         .pipe(checkRemoteFile(context)) // retry
@@ -60,14 +61,17 @@ module.exports = function(upload, auth, callback) {
         .pipe(through.obj());
 };
 
-function init(upload, auth) {
+function init(options) {
+    if (options.isLogAlreadyUpload === undefined) {
+        options.isLogAlreadyUpload = true;
+    }
     return through2Concurrent.obj({highWaterMark: highWaterMark}, function(file, encoding, next) {
-        var cdnpath = util.getCdnPath(file, upload);
-        var domain = auth.domain || '';
+        var cdnpath = util.getCdnPath(file, options);
+        var domain = options.domain || '';
         var cdnFullPath = domain + cdnpath;
 
         // 获取文件的源路径
-        var pathMap = upload.pathMap;
+        var pathMap = options.pathMap;
         var sourcePath = file.path;
         if (pathMap && pathMap[sourcePath]) {
             sourcePath = pathMap[sourcePath];
@@ -119,9 +123,11 @@ function checkRemoteFile(context) {
                             context.errorCheckNum--;
                         }
 
-                        context.logAlreadyUploadDefer.promise.then(function() {
-                            util.logAlreadyUpload(file);
-                        });
+                        if (context.options.isLogAlreadyUpload) {
+                            context.logAlreadyUploadDefer.promise.then(function() {
+                                util.logAlreadyUpload(file);
+                            });
+                        }
                     } else if (status === 404) {
                         context.needUploadNum++;
 
